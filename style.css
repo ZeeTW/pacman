@@ -69,5 +69,12 @@ h1 {
   background-color: black;
 }
 .path {
-  background-color: white;
+}
+.pacman {
+  background-color: yellow;
+  border-radius: 50%;
+}
+.points {
+  background-color: red;
+  border-radius: 70%;
 }
