@@ -14,8 +14,8 @@ const board = [
 ]
 /*---------------------------- Variables (state) ----------------------------*/
 let pacmanPosition = {
-  x: 5,
-  y: 4
+  x: 4,
+  y: 5
 }
 
 /*------------------------ Cached Element References ------------------------*/
@@ -24,13 +24,15 @@ const position = document.querySelector('.pacman')
 
 /*-------------------------------- Functions --------------------------------*/
 const createBoard = () => {
-  board.forEach((row) => {
-    row.forEach((cell) => {
+  gameBoard.innerHTML = ''
+
+  board.forEach((row, rowI) => {
+    row.forEach((cell, cellI) => {
       const cellBox = document.createElement('div')
-      if (cell === 1) {
-        cellBox.classList.add('wall')
-      } else if (cell === pacmanPosition) {
+      if (rowI === pacmanPosition.y && cellI === pacmanPosition.x) {
         cellBox.classList.add('pacman')
+      } else if (cell === 1) {
+        cellBox.classList.add('wall')
       } else if (cell === 0 || cell === 2) {
         cellBox.classList.add('path')
       } else if (cell === 3) {
@@ -42,36 +44,40 @@ const createBoard = () => {
     })
   })
 }
-createBoard()
-// console.log(board.indexOf(pacmanPosition))
 
 const updatePosition = () => {
   document.addEventListener('keydown', (event) => {
-    let x = [5]
-    let y = [4]
+    let newPositionX = pacmanPosition.x
+    let newPositionY = pacmanPosition.y
     if (event.key === 'ArrowUp') {
-      y--
-      console.log(pacmanPosition)
-      pacmanPosition = { ...pacmanPosition, x: pacmanPosition.x - 1 }
-      console.log(pacmanPosition)
+      newPositionY -= 1
+    } else if (event.key === 'ArrowDown') {
+      newPositionY += 1
+    } else if (event.key === 'ArrowLeft') {
+      newPositionX -= 1
+    } else if (event.key === 'ArrowRight') {
+      newPositionX += 1
     } else {
       console.log('no')
     }
+
+    if (
+      newPositionX >= 0 &&
+      newPositionY >= 0 &&
+      newPositionY < board.length &&
+      newPositionX < board[0].length &&
+      board[newPositionY][newPositionX] !== 1
+    ) {
+      pacmanPosition = { x: newPositionX, y: newPositionY }
+    } else {
+      console.log('hit a wall/out of boundaries')
+    }
+
+    createBoard()
   })
 }
-//   if (logKey === 'ArrowUp') {
-//     console.log('yes')
-//   } else {
-//     console.log('wrong')
-//   }
-// }
+
+createBoard()
 updatePosition()
-// const keyboardClick = (event) =>{
-//   const index = Array.from(board).indexOf(event.target)
-//   if()
-// }
 
 /*----------------------------- Event Listeners -----------------------------*/
-// board.forEach((cell) => {
-//   cell.addEventListener('keydown')
-// })
