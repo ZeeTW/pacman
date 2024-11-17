@@ -73,8 +73,12 @@ h1 {
 .pacman {
   background-color: yellow;
   border-radius: 50%;
+  transition: transform 0.2s ease-in-out;
 }
 .points {
-  background-color: red;
+  background-color: rgb(246, 238, 238);
   border-radius: 70%;
+  width: 20px;
+  height: 20px;
+  margin: auto;
 }
