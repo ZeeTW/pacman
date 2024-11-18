@@ -57,8 +57,8 @@ h1 {
 }
 
 .game {
-  height: 500px;
-  width: 500px;
+  height: 450px;
+  width: 450px;
   border: 2px solid white;
   display: grid;
   grid-template-columns: repeat(10, 1fr);
@@ -99,6 +99,7 @@ h2 {
   font-family: 'Press Start 2P', system-ui;
   font-weight: 400;
   font-style: normal;
+  font-size: 20px;
 }
 .blinky {
   width: 40px;
@@ -123,4 +124,12 @@ h2 {
   height: 40px;
   border-radius: 70%;
   background-color: orange;
+}
+h3 {
+  font-size: 15px;
+  color: white;
+  font-family: 'Press Start 2P', system-ui;
+  font-weight: 400;
+  font-style: normal;
+  margin: 0 5px 5px 5px;
 }

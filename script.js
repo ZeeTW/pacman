@@ -85,11 +85,11 @@ const updatePosition = () => {
     if (board[newPositionY][newPositionX] === 3) {
       board[newPositionY][newPositionX] = 0
       score += 100
-      console.log(`${score}`)
       document.getElementById('score-text').innerText = `Score: ${score}`
     }
     pacmanPosition = { x: newPositionX, y: newPositionY }
     createBoard()
+    collisions()
   } else {
     console.log('hit a wall/out of boundaries')
   }
@@ -139,13 +139,36 @@ const moveGhosts = (ghost) => {
     ghost.y = move.y
     ghost.direction = move.direction
   }
+  collisions()
 }
 
 const startGhosts = () => {
   ghosts.forEach((ghost) => moveGhosts(ghost))
   createBoard()
 }
-setInterval(startGhosts, 400)
+ghostMove = setInterval(startGhosts, 250)
+
+const collisions = () => {
+  ghosts.forEach((ghost) => {
+    if (pacmanPosition.x === ghost.x && pacmanPosition.y === ghost.y) {
+      gameOver()
+    }
+  })
+}
+
+const gameOver = () => {
+  clearInterval(moveInt)
+  clearInterval(ghostMove)
+  document.getElementById('game-over').textContent = 'Game is over ya loser!'
+}
+
+const checkForWinner = () => {
+  if (score === 300) {
+    clearInterval(moveInt)
+    clearInterval(ghostMove)
+    document.getElementById('you-won').textContent = 'EZ WINNNNNNNNNNNNNNN'
+  }
+}
 /*----------------------------- Event Listeners -----------------------------*/
 document.addEventListener('keydown', (event) => {
   if (event.key === 'ArrowUp' || event.key === 'w') {
@@ -160,4 +183,6 @@ document.addEventListener('keydown', (event) => {
 })
 
 startGhosts()
+collisions()
+checkForWinner()
 createBoard()
