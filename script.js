@@ -126,7 +126,7 @@ const moveGhosts = (ghost) => {
       newGhostY >= 0 &&
       newGhostX < board[0].length &&
       newGhostY < board.length &&
-      board[newGhostX][newGhostY] !== 1
+      board[newGhostY][newGhostX] !== 1
     ) {
       canMove.push({ x: newGhostX, y: newGhostY, direction: direction })
     }
@@ -135,12 +135,17 @@ const moveGhosts = (ghost) => {
   if (canMove.length > 0) {
     let move
     move = canMove[Math.floor(Math.random() * canMove.length)]
+    ghost.x = move.x
+    ghost.y = move.y
+    ghost.direction = move.direction
   }
-  ghost.x = move.x
-  ghost.y = move.y
-  ghost.direction = move.direction
 }
 
+const startGhosts = () => {
+  ghosts.forEach((ghost) => moveGhosts(ghost))
+  createBoard()
+}
+setInterval(startGhosts, 400)
 /*----------------------------- Event Listeners -----------------------------*/
 document.addEventListener('keydown', (event) => {
   if (event.key === 'ArrowUp' || event.key === 'w') {
@@ -154,5 +159,5 @@ document.addEventListener('keydown', (event) => {
   }
 })
 
-moveGhosts[ghosts[0]]
+startGhosts()
 createBoard()
