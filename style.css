@@ -73,7 +73,14 @@ h1 {
 .pacman {
   background-color: yellow;
   border-radius: 50%;
-  transition: transform 0.2s ease-in-out;
+  transition: transform 0.3s ease-in-out;
+  width: 40px;
+  height: 40px;
+  margin: auto;
+}
+.pacman::after {
+  width: 40px;
+  height: 40px;
 }
 .points {
   background-color: rgb(246, 238, 238);
@@ -81,4 +88,15 @@ h1 {
   width: 10px;
   height: 10px;
   margin: auto;
+}
+#game-body {
+  display: flex;
+  flex-direction: column;
+}
+
+h2 {
+  color: white;
+  font-family: 'Press Start 2P', system-ui;
+  font-weight: 400;
+  font-style: normal;
 }

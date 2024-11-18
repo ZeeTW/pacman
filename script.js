@@ -104,7 +104,8 @@ const updatePosition = () => {
     if (board[newPositionY][newPositionX] === 3) {
       board[newPositionY][newPositionX] = 0
       score += 100
-      document.getElementByName('h2').textContent = `Score:${score}`
+      console.log(`${score}`)
+      document.getElementById('score-text').innerText = `Score: ${score}`
     }
     pacmanPosition = { x: newPositionX, y: newPositionY }
     createBoard()
@@ -117,19 +118,19 @@ const startMove = (way) => {
   if (direction !== way) {
     direction = way
     clearInterval(moveInt)
-    moveInt = setInterval(updatePosition, 400)
+    moveInt = setInterval(updatePosition, 300)
   }
 }
 
 /*----------------------------- Event Listeners -----------------------------*/
 document.addEventListener('keydown', (event) => {
-  if (event.key === 'ArrowUp') {
+  if (event.key === 'ArrowUp' || event.key === 'w') {
     startMove('up')
-  } else if (event.key === 'ArrowDown') {
+  } else if (event.key === 'ArrowDown' || event.key === 's') {
     startMove('down')
-  } else if (event.key === 'ArrowRight') {
+  } else if (event.key === 'ArrowRight' || event.key === 'd') {
     startMove('right')
-  } else if (event.key === 'ArrowLeft') {
+  } else if (event.key === 'ArrowLeft' || event.key === 'a') {
     startMove('left')
   }
 })
