@@ -1,6 +1,6 @@
 /*-------------------------------- Constants --------------------------------*/
 const board = [
-  [3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
+  [3, 3, 3, 3, 0, 0, 0, 0, 3, 3],
   [3, 1, 1, 3, 1, 1, 3, 1, 1, 3],
   [3, 1, 1, 3, 1, 1, 3, 1, 1, 3],
   [3, 3, 3, 3, 1, 1, 3, 3, 3, 3],
@@ -12,6 +12,7 @@ const board = [
   [1, 3, 3, 3, 3, 3, 3, 3, 3, 1],
   [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 ]
+
 /*---------------------------- Variables (state) ----------------------------*/
 let pacmanPosition = {
   x: 4,
@@ -20,6 +21,12 @@ let pacmanPosition = {
 let direction = null
 let moveInt = null
 let score = 0
+let ghosts = [
+  { name: 'blinky', x: 4, y: 0, direction: null, scared: false },
+  { name: 'pinky', x: 5, y: 0, direction: null, scared: false },
+  { name: 'inky', x: 6, y: 0, direction: null, scared: false },
+  { name: 'clyde', x: 7, y: 0, direction: null, scared: false }
+]
 
 /*------------------------ Cached Element References ------------------------*/
 const gameBoard = document.querySelector('.game')
@@ -36,7 +43,7 @@ const createBoard = () => {
         cellBox.classList.add('pacman')
       } else if (cell === 1) {
         cellBox.classList.add('wall')
-      } else if (cell === 0 || cell === 2) {
+      } else if (cell === 0) {
         cellBox.classList.add('path')
       } else if (cell === 3) {
         cellBox.classList.add('points')
@@ -46,39 +53,13 @@ const createBoard = () => {
       gameBoard.appendChild(cellBox)
     })
   })
+  // adding ghosts to the game
+  ghosts.forEach((ghost) => {
+    const ghostI = ghost.y * board[0].length + ghost.x
+    const ghostCell = gameBoard.children[ghostI]
+    ghostCell.classList.add(ghost.name)
+  })
 }
-
-// const updatePosition = () => {
-//   document.addEventListener('keydown', (event) => {
-//     let newPositionX = pacmanPosition.x
-//     let newPositionY = pacmanPosition.y
-//     if (event.key === 'ArrowUp') {
-//       newPositionY -= 1
-//     } else if (event.key === 'ArrowDown') {
-//       newPositionY += 1
-//     } else if (event.key === 'ArrowLeft') {
-//       newPositionX -= 1
-//     } else if (event.key === 'ArrowRight') {
-//       newPositionX += 1
-//     } else {
-//       console.log('no')
-//     }
-
-//     if (
-//       newPositionX >= 0 &&
-//       newPositionY >= 0 &&
-//       newPositionY < board.length &&
-//       newPositionX < board[0].length &&
-//       board[newPositionY][newPositionX] !== 1
-//     ) {
-//       pacmanPosition = { x: newPositionX, y: newPositionY }
-//       createBoard()
-//     } else {
-//       console.log('hit a wall/out of boundaries')
-//     }
-//   })
-// }
-
 const updatePosition = () => {
   let newPositionX = pacmanPosition.x
   let newPositionY = pacmanPosition.y
@@ -122,6 +103,44 @@ const startMove = (way) => {
   }
 }
 
+const moveGhosts = (ghost) => {
+  const directions = ['up', 'down', 'left', 'right']
+  let canMove = []
+
+  directions.forEach((direction) => {
+    let newGhostX = ghost.x
+    let newGhostY = ghost.y
+
+    if (direction === 'up') {
+      newGhostY -= 1
+    } else if (direction === 'down') {
+      newGhostY += 1
+    } else if (direction === 'left') {
+      newGhostX -= 1
+    } else if (direction === 'right') {
+      newGhostX += 1
+    }
+
+    if (
+      newGhostX >= 0 &&
+      newGhostY >= 0 &&
+      newGhostX < board[0].length &&
+      newGhostY < board.length &&
+      board[newGhostX][newGhostY] !== 1
+    ) {
+      canMove.push({ x: newGhostX, y: newGhostY, direction: direction })
+    }
+  })
+
+  if (canMove.length > 0) {
+    let move
+    move = canMove[Math.floor(Math.random() * canMove.length)]
+  }
+  ghost.x = move.x
+  ghost.y = move.y
+  ghost.direction = move.direction
+}
+
 /*----------------------------- Event Listeners -----------------------------*/
 document.addEventListener('keydown', (event) => {
   if (event.key === 'ArrowUp' || event.key === 'w') {
@@ -135,4 +154,5 @@ document.addEventListener('keydown', (event) => {
   }
 })
 
+moveGhosts[ghosts[0]]
 createBoard()
