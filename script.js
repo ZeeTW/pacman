@@ -1,6 +1,6 @@
 /*-------------------------------- Constants --------------------------------*/
 const board = [
-  [3, 3, 3, 3, 0, 0, 0, 0, 3, 3],
+  [4, 3, 3, 3, 0, 0, 0, 0, 3, 3],
   [3, 1, 1, 3, 1, 1, 3, 1, 1, 3],
   [3, 1, 1, 3, 1, 1, 3, 1, 1, 3],
   [3, 3, 3, 3, 1, 1, 3, 3, 3, 3],
@@ -27,7 +27,7 @@ let ghosts = [
   { name: 'inky', x: 6, y: 0, direction: null, scared: false },
   { name: 'clyde', x: 7, y: 0, direction: null, scared: false }
 ]
-
+let over
 /*------------------------ Cached Element References ------------------------*/
 const gameBoard = document.querySelector('.game')
 const position = document.querySelector('.pacman')
@@ -35,7 +35,7 @@ const position = document.querySelector('.pacman')
 /*-------------------------------- Functions --------------------------------*/
 const createBoard = () => {
   gameBoard.innerHTML = ''
-
+  over = false
   board.forEach((row, rowI) => {
     row.forEach((cell, cellI) => {
       const cellBox = document.createElement('div')
@@ -47,6 +47,8 @@ const createBoard = () => {
         cellBox.classList.add('path')
       } else if (cell === 3) {
         cellBox.classList.add('points')
+      } else if (cell === 4) {
+        cellBox.classList.add('power-up')
       } else {
         return
       }
@@ -57,12 +59,19 @@ const createBoard = () => {
   ghosts.forEach((ghost) => {
     const ghostI = ghost.y * board[0].length + ghost.x
     const ghostCell = gameBoard.children[ghostI]
-    ghostCell.classList.add(ghost.name)
+    if (ghostCell) {
+      if (ghost.scared === true) {
+        ghostCell.classList.add('scared')
+      } else {
+        ghostCell.classList.add(ghost.name)
+      }
+    }
   })
 }
 const updatePosition = () => {
   let newPositionX = pacmanPosition.x
   let newPositionY = pacmanPosition.y
+
   if (direction === 'up') {
     newPositionY -= 1
   } else if (direction === 'down') {
@@ -86,17 +95,29 @@ const updatePosition = () => {
       board[newPositionY][newPositionX] = 0
       score += 100
       document.getElementById('score-text').innerText = `Score: ${score}`
+    } else if (board[newPositionY][newPositionX] === 4) {
+      board[newPositionY][newPositionX] = 0
+      edibleGhosts()
     }
     pacmanPosition = { x: newPositionX, y: newPositionY }
     createBoard()
     collisions()
+    checkForWinner()
   } else {
     console.log('hit a wall/out of boundaries')
   }
 }
 
+const gameOver = () => {
+  over = true
+  clearInterval(moveInt)
+  clearInterval(ghostMove)
+  document.getElementById('game-over').textContent = 'Game is over ya loser!'
+}
 const startMove = (way) => {
-  if (direction !== way) {
+  if (over === true) {
+    return
+  } else if (direction !== way) {
     direction = way
     clearInterval(moveInt)
     moveInt = setInterval(updatePosition, 300)
@@ -146,28 +167,55 @@ const startGhosts = () => {
   ghosts.forEach((ghost) => moveGhosts(ghost))
   createBoard()
 }
-ghostMove = setInterval(startGhosts, 250)
+ghostMove = setInterval(startGhosts, 500)
 
 const collisions = () => {
   ghosts.forEach((ghost) => {
     if (pacmanPosition.x === ghost.x && pacmanPosition.y === ghost.y) {
-      gameOver()
+      if (ghost.scared) {
+        score += 500
+        document.getElementById('score-text').innerHTML = `Score: ${score}`
+        ghosts = ghosts.filter((ghostEaten) => ghostEaten !== ghost)
+      } else {
+        gameOver()
+      }
     }
   })
 }
 
-const gameOver = () => {
-  clearInterval(moveInt)
-  clearInterval(ghostMove)
-  document.getElementById('game-over').textContent = 'Game is over ya loser!'
-}
-
 const checkForWinner = () => {
-  if (score === 300) {
+  if (score === 6700) {
     clearInterval(moveInt)
     clearInterval(ghostMove)
     document.getElementById('you-won').textContent = 'EZ WINNNNNNNNNNNNNNN'
   }
+}
+
+const edibleGhosts = () => {
+  ghosts.forEach((ghost) => {
+    ghost.scared = true
+  })
+  createBoard()
+  document.getElementById(
+    'power-up'
+  ).textContent = `You got a power up! Eat a ghost!`
+  setTimeout(() => {
+    ghosts.forEach((ghost) => {
+      ghost.scared = false
+      const ghostClass = document.querySelectorAll('.scared')
+      ghostClass.forEach((ghost) => {
+        ghost.classList.remove('.scared')
+        ghost.classList.add(ghost.name)
+      })
+    })
+    document.getElementById('power-up').textContent = ``
+  }, 7000)
+}
+const init = () => {
+  startGhosts()
+  collisions()
+  checkForWinner()
+  createBoard()
 }
 /*----------------------------- Event Listeners -----------------------------*/
 document.addEventListener('keydown', (event) => {
@@ -182,7 +230,4 @@ document.addEventListener('keydown', (event) => {
   }
 })
 
-startGhosts()
-collisions()
-checkForWinner()
-createBoard()
+init()
