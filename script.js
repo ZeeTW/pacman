@@ -184,7 +184,7 @@ const collisions = () => {
 }
 
 const checkForWinner = () => {
-  if (score === 6700) {
+  if (score === 6000) {
     clearInterval(moveInt)
     clearInterval(ghostMove)
     document.getElementById('you-won').textContent = 'EZ WINNNNNNNNNNNNNNN'
