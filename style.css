@@ -64,7 +64,7 @@ h1 {
   grid-template-rows: repeat(11, 1fr);
 }
 #game-body {
-  height: 110vh;
+  height: 100vh;
 }
 .wall {
   background-color: black;
@@ -173,7 +173,7 @@ a:hover {
   justify-content: center;
   align-items: center;
   padding: 10px 80px;
-  height: 115vh;
+  height: 100vh;
 }
 p {
   color: white;
