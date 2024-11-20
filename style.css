@@ -2,7 +2,7 @@ body {
   margin: 0;
   /* background-image: linear-gradient(#03045e, #f72585); */
   background-image: linear-gradient(#10002b, #03045e);
-  height: 110vh;
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -63,7 +63,9 @@ h1 {
   grid-template-columns: repeat(10, 1fr);
   grid-template-rows: repeat(11, 1fr);
 }
-
+#game-body {
+  height: 110vh;
+}
 .wall {
   background-color: black;
 }
@@ -164,4 +166,25 @@ a:hover {
   font-size: 15px;
   color: rgb(235, 162, 162);
   border: rgb(235, 162, 162) 2px solid;
+}
+
+.rules-body {
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 80px;
+  height: 115vh;
+}
+p {
+  color: white;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande',
+    'Lucida Sans', Arial, sans-serif;
+}
+li {
+  color: white;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande',
+    'Lucida Sans', Arial, sans-serif;
+}
+.rules-heading {
+  color: rgb(216, 240, 34);
 }
