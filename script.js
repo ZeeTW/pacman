@@ -112,7 +112,7 @@ const gameOver = () => {
   over = true
   clearInterval(moveInt)
   clearInterval(ghostMove)
-  document.getElementById('game-over').textContent = 'Game is over ya loser!'
+  document.getElementById('game-over').textContent = 'Game is over, you LOST!'
 }
 const startMove = (way) => {
   if (over === true) {
@@ -187,7 +187,7 @@ const checkForWinner = () => {
   if (score === 6000) {
     clearInterval(moveInt)
     clearInterval(ghostMove)
-    document.getElementById('you-won').textContent = 'EZ WINNNNNNNNNNNNNNN'
+    document.getElementById('you-won').textContent = 'You Won! Well played!'
   }
 }
 
@@ -209,7 +209,7 @@ const edibleGhosts = () => {
       })
     })
     document.getElementById('power-up').textContent = ``
-  }, 7000)
+  }, 8000)
 }
 const init = () => {
   startGhosts()
