@@ -10,7 +10,7 @@ The reason why I chose this game, is because Pac-man has been in everyone's live
 
 ## Deployed game
 
-[Pac-Man]()
+[Pac-Man](https://zees-pacman.surge.sh/)
 
 ## Technologies used
 
